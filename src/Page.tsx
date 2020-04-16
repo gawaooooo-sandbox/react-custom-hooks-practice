@@ -1,8 +1,8 @@
-// v3 インターフェースの定義
-// 履歴機能を提供するLocalHistoryインターフェースを定義する
-// PageコンポーネントはLocalHistoryインターフェースを介して操作
+// v4 データ構造を独立したカスタムフックに分離
+// LocalHistoryはStack(LIFO)のデータ構造なので、useStackカスタムフックとして切り出す
+// カスタムフックは多段構成が可能
 
-// 一連の操作の関連が明確になる。一連の操作を他のコンポーネントに渡すことが容易になる
+// useLocalHisotyがStackの実装詳細を意識せず、画面遷移の制御だけをロジックとして持つようになる
 
 import React from 'react'
 import { useLocalHistory } from './userLocalHistory'
