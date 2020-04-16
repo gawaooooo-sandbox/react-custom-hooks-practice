@@ -1,6 +1,6 @@
 import { useStack } from "./useStack";
 
-interface LocalHistory {
+export interface LocalHistory {
   Top: () => void;
   Next: () => void;
   Back: () => void;

@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // import App from './App';
-import { Page } from './Page';
+import { PageContainer } from './Page';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
-    <Page />
+    <PageContainer />
   </React.StrictMode>,
   document.getElementById('root')
 );

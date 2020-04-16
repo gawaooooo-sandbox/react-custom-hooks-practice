@@ -1,18 +1,30 @@
-// v4 データ構造を独立したカスタムフックに分離
-// LocalHistoryはStack(LIFO)のデータ構造なので、useStackカスタムフックとして切り出す
-// カスタムフックは多段構成が可能
+// v5 ContainerコンポーネントとPresentationalコンポーネントの分離
+// 副作用を起こすレイヤーを分離する
+// Reduxではconnectを実行するレイヤーを分離することがフレームワークで強制されている。これと同じ設計方針
 
-// useLocalHisotyがStackの実装詳細を意識せず、画面遷移の制御だけをロジックとして持つようになる
+// Pageコンポーネントは引数を受けて返り値を返すという純粋な関数になる
+
 
 import React from 'react'
-import { useLocalHistory } from './userLocalHistory'
+import { LocalHistory, useLocalHistory } from './userLocalHistory'
 
-export const Page: React.FC = () => {
+
+// Containerコンポーネント
+export const PageContainer: React.FC = () => {
     const topPage = 1
     const lastPage = 4
 
     const [currentPage, history] = useLocalHistory(topPage, lastPage)
+    return <Page currentPage={currentPage} history={history} />
+}
 
+interface PageProps {
+    currentPage: number
+    history: LocalHistory
+}
+
+// Presentationalコンポーネント
+const Page: React.FC<PageProps> = ({currentPage, history}: PageProps) => {
     return (
         <div>
             <div>現在のページ: {currentPage}</div>
