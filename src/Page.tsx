@@ -1,56 +1,26 @@
-// Viewとロジックが混在しているため、読みづらく、ロジックのテストが難しいコード
+// v2 カスタムフック。コンポーネントからロジックをカスタムフックに分離
+// コンポーネントが必要な情報は以下だけなので、historyはカスタムフックに隠蔽
+// 値: currentPage, 操作: Top, Next, Back, Last, Reset
 
-import React, {useState} from 'react'
+// PageコンポーネントはViewに関連する実装が中心となり、とても読みやすくなる
 
-export const Page = () => {
+import React from 'react'
+import { useLocalHistory } from './userLocalHistory'
+
+export const Page: React.FC = () => {
     const topPage = 1
     const lastPage = 4
-    const initHistoy: number[] = [topPage]
-    const [history, setHistory] = useState<number[]>(initHistoy)
 
-    const currentPage = history[history.length - 1]
+    const [currentPage, Top, Next, Back, Last, Reset] = useLocalHistory(topPage, lastPage)
 
     return (
         <div>
             <div>現在のページ: {currentPage}</div>
-            <button onClick={() => {
-                // 現在のトップページの場合は移動しない
-                if (currentPage !== topPage) {
-                    const nextHistory = [...history, topPage]
-                    setHistory(nextHistory)
-                }
-            }}>トップ</button>
-            <button onClick={() => {
-                const nextPage = currentPage + 1
-                // ラストページより先には進めない
-                if (nextPage <= lastPage) {
-                    const nextHistory = [...history, nextPage]
-                    setHistory(nextHistory)
-                }
-            }}>
-                次へ
-            </button>
-            <button onClick={() => {
-                // トップページより前には戻れない
-                if (history.length > 1) {
-                    const nextHistory = [...history.slice(0, history.length - 1)]
-                    setHistory(nextHistory)
-                }
-            }}>
-                戻る
-            </button>
-            <button onClick={() => {
-                // 現在ラストページの場合は移動しない
-                if (currentPage !== lastPage) {
-                    const nextHistory = [...history, lastPage]
-                    setHistory(nextHistory)
-                }
-            }}>
-                ラスト
-            </button>
-            <button onClick={() => {
-                setHistory(initHistoy)
-            }}>履歴を消去</button>
+            <button onClick={Top}>トップ</button>
+            <button onClick={Next}>次へ</button>
+            <button onClick={Back}>戻る</button>
+            <button onClick={Last}>ラスト</button>
+            <button onClick={Reset}>リセット</button>
         </div>
     )
 }
