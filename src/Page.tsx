@@ -1,8 +1,8 @@
-// v2 カスタムフック。コンポーネントからロジックをカスタムフックに分離
-// コンポーネントが必要な情報は以下だけなので、historyはカスタムフックに隠蔽
-// 値: currentPage, 操作: Top, Next, Back, Last, Reset
+// v3 インターフェースの定義
+// 履歴機能を提供するLocalHistoryインターフェースを定義する
+// PageコンポーネントはLocalHistoryインターフェースを介して操作
 
-// PageコンポーネントはViewに関連する実装が中心となり、とても読みやすくなる
+// 一連の操作の関連が明確になる。一連の操作を他のコンポーネントに渡すことが容易になる
 
 import React from 'react'
 import { useLocalHistory } from './userLocalHistory'
@@ -11,16 +11,16 @@ export const Page: React.FC = () => {
     const topPage = 1
     const lastPage = 4
 
-    const [currentPage, Top, Next, Back, Last, Reset] = useLocalHistory(topPage, lastPage)
+    const [currentPage, history] = useLocalHistory(topPage, lastPage)
 
     return (
         <div>
             <div>現在のページ: {currentPage}</div>
-            <button onClick={Top}>トップ</button>
-            <button onClick={Next}>次へ</button>
-            <button onClick={Back}>戻る</button>
-            <button onClick={Last}>ラスト</button>
-            <button onClick={Reset}>リセット</button>
+            <button onClick={history.Top}>トップ</button>
+            <button onClick={history.Next}>次へ</button>
+            <button onClick={history.Back}>戻る</button>
+            <button onClick={history.Last}>ラスト</button>
+            <button onClick={history.Reset}>リセット</button>
         </div>
     )
 }
